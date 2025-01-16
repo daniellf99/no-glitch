@@ -1,5 +1,5 @@
 # No Glitch
-Libretro kernel debugger written in Zig.
+Libretro core debugger written in Zig.
 
 ## Resources
 http://www.ue.eti.pg.gda.pl/fpgalab/zadania.spartan3/zad_vga_struktura_pliku_bmp_en.html
