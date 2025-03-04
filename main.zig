@@ -99,12 +99,17 @@ pub fn main() !void {
         .data = @ptrCast(buffer),
         .size = @intCast(file_size),
     };
-    _ = libretro.retro_load_game(&game_info);
+    const game_loaded = libretro.retro_load_game(&game_info);
+
+    if (!game_loaded) {
+        std.debug.print("Emulator could not load game.", .{});
+        std.process.exit(0);
+    }
 
     // Run emulator
     // TODO Run according to FPS
     std.debug.print("\n", .{});
     libretro.retro_run();
-    
+
     // TODO Display video
 }
