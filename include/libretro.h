@@ -5645,7 +5645,7 @@ enum retro_savestate_context
     * May be loaded at any time,
     * even in a separate session or on another device.
     *
-    */    * Should not contain any pointers to code or data.
+    */
 
    RETRO_SAVESTATE_CONTEXT_NORMAL                 = 0,
 
