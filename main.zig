@@ -84,7 +84,27 @@ pub fn main() !void {
     std.debug.print("\n", .{});
     libretro.retro_init();
 
-    // Run according to FPS
+    // Load game
+    var file = try std.fs.cwd().openFile("roms/IBM Logo.ch8", .{});
+    defer file.close();
+
+    const file_size = (try file.stat()).size;
+    const buffer = try std.heap.page_allocator.alloc(u8, file_size);
+    defer std.heap.page_allocator.free(buffer);
+
+    _ = try file.readAll(buffer);
+    std.debug.print("\n\nBuffer size: {}\n\n", .{file_size});
+
+    var game_info = libretro.retro_game_info{
+        .data = @ptrCast(buffer),
+        .size = @intCast(file_size),
+    };
+    _ = libretro.retro_load_game(&game_info);
+
+    // Run emulator
+    // TODO Run according to FPS
+    std.debug.print("\n", .{});
     libretro.retro_run();
-    // Display video
+    
+    // TODO Display video
 }

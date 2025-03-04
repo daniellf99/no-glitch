@@ -7,6 +7,8 @@ Written in Zig v0.13
 zig build && ./zig-out/bin/main
 
 ## TODO
+* Provide a video buffer
+* Organize code into src/ dir
 * Load libs dynamically (see [dlopen](https://man7.org/linux/man-pages/man3/dlopen.3.html), [dlsym](https://man7.org/linux/man-pages/man3/dlsym.3.html) and [this](https://stackoverflow.com/questions/7626526/load-shared-library-by-path-at-runtime))
 
 ## Resources
