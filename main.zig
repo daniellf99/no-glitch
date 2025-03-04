@@ -42,7 +42,7 @@ export fn environment_cb(cmd: c_uint, data: ?*anyopaque) bool {
         },
     }
 
-    const a = libretro.retro_core_option_v2_category {};
+    const a = libretro.retro_core_option_v2_category{};
     std.debug.print("Struct: {}\n", .{a});
 
     std.debug.print("Env: {}\n", .{env});
@@ -74,11 +74,14 @@ pub fn main() !void {
     libretro.retro_set_environment(environment_cb);
 
     libretro.retro_get_system_info(&system_info);
+    std.debug.print("\n", .{});
     debug_system_info();
-    
+
     libretro.retro_get_system_av_info(&system_av_info);
+    std.debug.print("\n", .{});
     debug_system_av_info();
 
+    std.debug.print("\n", .{});
     libretro.retro_init();
 
     // Run according to FPS
