@@ -5,6 +5,7 @@
 
 const std = @import("std");
 const builtin = @import("builtin");
+const gui = @import("gui.zig");
 
 // Import libretro.h
 const libretro = @cImport({
@@ -50,6 +51,15 @@ export fn environment_cb(cmd: c_uint, data: ?*anyopaque) bool {
     return true;
 }
 
+export fn video_cb(data: *anyopaque, width: c_uint, height: c_uint, pitch: usize) void {
+    _ = data;
+    _ = width;
+    _ = height;
+    _ = pitch;
+
+    stdout.writeAll("Video CB called.\n") catch unreachable;
+}
+
 fn debug_system_info() void {
     std.debug.print("==DEBUG SYSTEM INFO==\n", .{});
     const lib_name: [*:0]const u8 = system_info.library_name;
@@ -71,6 +81,10 @@ fn debug_system_av_info() void {
 }
 
 pub fn main() !void {
+    gui.start();
+    defer gui.quit();
+    std.time.sleep(std.time.ns_per_s * 5);
+
     libretro.retro_set_environment(environment_cb);
 
     libretro.retro_get_system_info(&system_info);
@@ -112,4 +126,5 @@ pub fn main() !void {
     libretro.retro_run();
 
     // TODO Display video
+    std.debug.print("\n", .{});
 }

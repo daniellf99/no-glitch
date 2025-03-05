@@ -7,10 +7,13 @@ pub fn build(b: *std.Build) void {
         .target = b.host,
     });
 
+    exe.linkLibCpp();
+    exe.linkSystemLibrary("SDL2");
+    exe.linkSystemLibrary("SDL2_ttf");
+
     exe.addIncludePath(b.path("./include"));
     exe.addLibraryPath(b.path("./lib"));
     exe.linkSystemLibrary("libretro");
-    exe.linkLibCpp();
 
     b.installArtifact(exe);
 }
