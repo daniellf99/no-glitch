@@ -4,12 +4,26 @@ Libretro core debugger written in Zig.
 Written in Zig v0.13
 
 ## Running
+Ensure SDL is installed:
+```
+sudo apt install libsdl2-dev
+```
+
+Running the tool:
+```
 zig build && ./zig-out/bin/main
+```
+
+Running the core with RetroArch:
+```
+flatpak run org.libretro.RetroArch -L {path-to-so}.so "{path-to-rom}"
+```
 
 ## TODO
-* Provide a video buffer
+* [GUI] Render text with SDL TTF
+* [GUI] Render video
 * Organize code into src/ dir
-* Load libs dynamically (see [dlopen](https://man7.org/linux/man-pages/man3/dlopen.3.html), [dlsym](https://man7.org/linux/man-pages/man3/dlsym.3.html) and [this](https://stackoverflow.com/questions/7626526/load-shared-library-by-path-at-runtime))
+* Load shared libs dynamically (see [dlopen](https://man7.org/linux/man-pages/man3/dlopen.3.html), [dlsym](https://man7.org/linux/man-pages/man3/dlsym.3.html) and [this](https://stackoverflow.com/questions/7626526/load-shared-library-by-path-at-runtime))
 
 ## Resources
 * http://www.ue.eti.pg.gda.pl/fpgalab/zadania.spartan3/zad_vga_struktura_pliku_bmp_en.html
