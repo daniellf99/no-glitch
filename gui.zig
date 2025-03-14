@@ -25,11 +25,10 @@ pub fn start() void {
         std.debug.print("SDL_CreateWindow error: {s}\n", .{sdl.SDL_GetError()});
         @panic("Could not initialize GUI window.");
     }
-
     window = maybe_window;
 
     // Init renderer
-    const maybe_renderer = sdl.SDL_CreateRenderer(window, -1, sdl.SDL_RENDERER_ACCELERATED);
+    const maybe_renderer = sdl.SDL_CreateRenderer(window.?, -1, sdl.SDL_RENDERER_ACCELERATED);
 
     if (maybe_renderer) |r| {
         renderer = r;
@@ -48,12 +47,63 @@ pub fn start() void {
     defer sdl.TTF_CloseFont(font);
 
     const white = sdl.SDL_Color{ .r = 255, .g = 255, .b = 255, .a = 255 };
-    const surface = sdl.TTF_RenderText_Solid(font, "abc", white);
+    const surface = sdl.TTF_RenderText_Solid(font, "TESTEEEEEEEEEEEE", white);
+    if (surface == null) {
+        std.debug.print("TTF_RenderText_Solid error: {s}\n", .{sdl.TTF_GetError()});
+    }
     defer sdl.SDL_FreeSurface(surface);
 
-    const texture = sdl.SDL_CreateTextureFromSurface(renderer, surface) orelse unreachable;
-    const dst_rect = sdl.SDL_Rect{ .x = 50, .y = 50, .w = 150, .h = 50 };
-    _ = sdl.SDL_RenderCopy(renderer, texture, null, &dst_rect);
+    const texture = sdl.SDL_CreateTextureFromSurface(renderer, surface);
+    if (texture == null) {
+        std.debug.print("SDL_RenderCopy error: {s}\n", .{sdl.SDL_GetError()});
+    }
+    defer sdl.SDL_DestroyTexture(texture);
+
+    const dst_rect = sdl.SDL_Rect{ .x = 0, .y = 0, .w = 150, .h = 50 };
+
+    const ret = sdl.SDL_RenderCopy(renderer, texture, null, &dst_rect);
+    if (ret != 0) {
+        std.debug.print("SDL_RenderCopy error: {s}\n", .{sdl.SDL_GetError()});
+    }
+
+    sdl.SDL_RenderPresent(renderer);
+}
+
+pub fn renderText(text: []const u8) void {
+    var err = sdl.SDL_RenderClear(renderer);
+    if (err != 0) {
+        std.debug.print("SDL_RenderClear error: {s}\n", .{sdl.SDL_GetError()});
+    }
+
+    const maybe_font = sdl.TTF_OpenFont("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 24);
+    if (maybe_font == null) {
+        std.debug.print("TTF_OpenFont error: {s}\n", .{sdl.TTF_GetError()});
+        @panic("Could not initialize GUI font.");
+    }
+    const font = maybe_font.?;  // Since we are checking that it is not null above, we know "orelse unreachable"
+    defer sdl.TTF_CloseFont(font);
+
+    const white = sdl.SDL_Color{ .r = 255, .g = 255, .b = 255, .a = 255 };
+    const surface = sdl.TTF_RenderText_Solid(font, @ptrCast(text), white);
+    if (surface == null) {
+        std.debug.print("TTF_RenderText_Solid error: {s}\n", .{sdl.TTF_GetError()});
+    }
+    defer sdl.SDL_FreeSurface(surface);
+
+    const texture = sdl.SDL_CreateTextureFromSurface(renderer, surface);
+    if (texture == null) {
+        std.debug.print("SDL_RenderCopy error: {s}\n", .{sdl.SDL_GetError()});
+    }
+    defer sdl.SDL_DestroyTexture(texture);
+
+    const dst_rect = sdl.SDL_Rect{ .x = 0, .y = 0, .w = 150, .h = 50 };
+
+    err = sdl.SDL_RenderCopy(renderer, texture, null, &dst_rect);
+    if (err != 0) {
+        std.debug.print("SDL_RenderCopy error: {s}\n", .{sdl.SDL_GetError()});
+    }
+
+    sdl.SDL_RenderPresent(renderer);
 }
 
 pub fn quit() void {
@@ -64,6 +114,6 @@ pub fn quit() void {
 
     sdl.SDL_DestroyRenderer(ren);
     sdl.SDL_DestroyWindow(win);
-    sdl.SDL_Quit();
     sdl.TTF_Quit();
+    sdl.SDL_Quit();
 }

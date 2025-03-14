@@ -20,7 +20,6 @@ flatpak run org.libretro.RetroArch -L {path-to-so}.so "{path-to-rom}"
 ```
 
 ## TODO
-* [GUI] Render text with SDL TTF
 * [GUI] Render video
 * Organize code into src/ dir
 * Load shared libs dynamically (see [dlopen](https://man7.org/linux/man-pages/man3/dlopen.3.html), [dlsym](https://man7.org/linux/man-pages/man3/dlsym.3.html) and [this](https://stackoverflow.com/questions/7626526/load-shared-library-by-path-at-runtime))

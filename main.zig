@@ -83,7 +83,11 @@ fn debug_system_av_info() void {
 pub fn main() !void {
     gui.start();
     defer gui.quit();
+
     std.time.sleep(std.time.ns_per_s * 5);
+    gui.renderText("Olá");
+    std.time.sleep(std.time.ns_per_s * 5);
+    gui.renderText("Tchau");
 
     libretro.retro_set_environment(environment_cb);
 
