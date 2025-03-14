@@ -87,6 +87,8 @@ pub fn main() !void {
     std.time.sleep(std.time.ns_per_s * 5);
     gui.renderText("Olá");
     std.time.sleep(std.time.ns_per_s * 5);
+    gui.renderBitmap("bmp_24.bmp");
+    std.time.sleep(std.time.ns_per_s * 5);
     gui.renderText("Tchau");
 
     libretro.retro_set_environment(environment_cb);

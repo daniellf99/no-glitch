@@ -106,6 +106,23 @@ pub fn renderText(text: []const u8) void {
     sdl.SDL_RenderPresent(renderer);
 }
 
+pub fn renderBitmap(filename: []const u8) void {
+    const surface = sdl.SDL_LoadBMP_RW(sdl.SDL_RWFromFile(@ptrCast(filename), "rb"), 1);
+    if (surface == null) {
+        @panic("");
+    }
+    defer sdl.SDL_FreeSurface(surface);
+
+    const texture = sdl.SDL_CreateTextureFromSurface(renderer, surface);
+    defer sdl.SDL_DestroyTexture(texture);
+    // check err
+
+    _ = sdl.SDL_RenderClear(renderer);
+    _ = sdl.SDL_RenderCopy(renderer, texture, null, null);
+    _ = sdl.SDL_RenderPresent(renderer);
+    // check err
+}
+
 pub fn quit() void {
     const ren = renderer;
     renderer = null;
